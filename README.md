@@ -32,31 +32,7 @@ This repository contains an analysis of GDP forecasting using different time ser
 - **ARIMA** performs moderately well but is less accurate compared to STL and ETS.
 - **TBATS, NNAR, and Prophet** exhibit significantly higher errors, making them less suitable for this dataset.
 - **Prophet** has the highest MAPE (82.14%), making it the least accurate model in this study.
-
-## Code Implementation
-### Data Preparation:
-```r
-library(readxl)
-gdp <- read_excel("gdp.xlsx")
-gdptime = ts(gdp$GDP, start = c(1959, 1), frequency = 4)
-training_data = window(gdptime, start = c(1959, 1), end = c(1978, 4))
-testing_data = window(gdptime, start = c(1979, 1), end = c(1988, 4))
-```
-### Model Implementation:
-#### ARIMA
-```r
-gdpmodel = auto.arima(training_data, ic="aic", trace = TRUE)
-forecasted_arima = forecast(gdpmodel, level = c(95), h = length(testing_data))
-accuracy(forecasted_arima, testing_data)
-```
-#### STL Decomposition + Forecast
-```r
-gdp_stl = stl(training_data, s.window = "periodic")
-forecasted_stl = forecast(gdp_stl, level = c(95), h = length(testing_data))
-accuracy(forecasted_stl, testing_data)
-```
-### Other models (ETS, TBATS, NNAR, Prophet) follow a similar pattern.
-
+  
 ## Conclusion
 Among all the forecasting models tested, **STL Decomposition + Forecast** provided the most accurate predictions based on error metrics. However, tuning different versions of STL and other models could yield better results.
 
